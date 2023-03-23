@@ -65,7 +65,8 @@ class SeedSegmentation {
 //            bitmaps.add(Pair(i + 1, bitmapResult))
 
             val filename: String = "seed_" + (i + 1) + ".jpg"
-            Imgcodecs.imwrite(outputDir.absolutePath + "/" + filename, result)
+            if (i != contours.size - 1)
+                Imgcodecs.imwrite(outputDir.absolutePath + "/" + filename, result)
 
             Imgproc.rectangle(inputImage, bbox.tl(), bbox.br(), Scalar(0.0, 255.0, 0.0), 2)
             if (i != contours.size - 1)

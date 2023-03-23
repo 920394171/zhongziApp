@@ -9,18 +9,18 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import org.pytorch.IValue
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
@@ -54,6 +54,7 @@ class SecondActivity : AppCompatActivity(), Runnable {
     private val mIvScaleY = 0f
     private val mStartX = 0f
     private val mStartY = 0f
+    private lateinit var imageUri: Uri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //这个是获取布局文件的，这里是你下一个页面的布局文件//注意这个是跳转界面的不能设置错，应该是第一个
@@ -84,7 +85,29 @@ class SecondActivity : AppCompatActivity(), Runnable {
             builder.setTitle("选择新图片")
             builder.setItems(options) { dialog: DialogInterface, item: Int ->
                 if (options[item] == "拍摄图片") {
+                    Toast.makeText(this, "请保持种子位置尽量分散，不要有重叠部分", Toast.LENGTH_LONG).show()
                     val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    val outputDir = File(this.filesDir, "seeds")
+                    if (!outputDir.exists()) {
+                        /*目录不存在 则创建*/
+                        outputDir.mkdirs()
+                    }
+                    val outputImg = File(outputDir, "seeds.jpg")
+                    try {
+                        if (outputImg.exists()) {
+                            outputImg.delete()
+                        }
+                        outputImg.createNewFile()
+                        imageUri = if (Build.VERSION.SDK_INT >= 24){
+                            FileProvider.getUriForFile(this, "${packageName}.fileprovider", outputImg)
+                        }else{
+                            Uri.fromFile(outputImg)
+                        }
+                        takePicture.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
                     startActivityForResult(takePicture, 0)
                 } else if (options[item] == "选择相册") {
                     val pickPhoto =
@@ -131,12 +154,14 @@ class SecondActivity : AppCompatActivity(), Runnable {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
-                0 -> if (resultCode == RESULT_OK && data != null) {
-                    mBitmap = data.extras!!["data"] as Bitmap?
+                0 -> if (resultCode == RESULT_OK) {
+//                    mBitmap = data.extras!!["data"] as Bitmap?
                     val matrix = Matrix()
                     //                        matrix.postRotate(-90.0f);
-                    mBitmap = Bitmap.createBitmap(mBitmap!!, 0, 0, mBitmap!!.width, mBitmap!!.height, matrix, true)
+                    mBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
+//                    mBitmap = Bitmap.createBitmap(mBitmap!!, 0, 0, mBitmap!!.width, mBitmap!!.height, matrix, true)
                     mImageView!!.setImageBitmap(mBitmap)
+                    File("$filesDir/seeds/seeds.jpg").delete()
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
                     val selectedImage = data.data
@@ -239,7 +264,7 @@ class SecondActivity : AppCompatActivity(), Runnable {
             file.delete()
         }
 
-        for(i in 0 until TOP_K){
+        for (i in 0 until TOP_K) {
             val value = seeds[Constants.IMAGENET_CLASSES[i]] ?: 0
             seeds[Constants.IMAGENET_CLASSES[i]] = value
         }
