@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:ignore="MissingClass">
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="411dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:foregroundGravity="center">
+
+                <com.hanks.htextview.rainbow.RainbowTextView
+                    android:layout_width="367dp"
+                    android:layout_height="53dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="95dp"
+                    android:text="   Seed is the source of life"
+                    android:textSize="25sp"
+                    app:colorSpace="150dp"
+                    app:colorSpeed="4dp" />
+
+
+                <Button
+                    android:id="@+id/button_in"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical|bottom"
+                    android:layout_marginStart="131dp"
+                    android:layout_marginBottom="65dp"
+                    android:background="@drawable/shape_login_btn"
+                    android:text="开始识别"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="402dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:lottie_loop="false"
+                    app:lottie_rawRes="@raw/seed2" />
+
+
+            </FrameLayout>
+
+
+
+</RelativeLayout>

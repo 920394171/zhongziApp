@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">认种道远</string>
+    <string name="infoTV">请选择图片</string>
+    <string name="image_view">请选择图片</string>
+    <string name="detect">检测</string>
+    <string name="select">选择图片</string>
+    <string name="returns">返回</string>
+    <string name="run_model">正在运行模型</string>
+</resources>
