@@ -35,7 +35,7 @@ import java.util.*
 class SecondActivity : AppCompatActivity(), Runnable {
     private val segmentationInstance = SeedSegmentation()
     private val mImageIndex = 0
-    private val mTestImages = arrayOf("test1.png", "test2.jpg", "test3.png")
+    private val mTestImages = arrayOf("111.png", "test2.jpg", "test3.png")
     private var mImageView: ImageView? = null
     private var mButtonDetect: Button? = null
     private var mButtonReturn: Button? = null
@@ -77,6 +77,7 @@ class SecondActivity : AppCompatActivity(), Runnable {
             finish()
         }
         mImageView = findViewById(R.id.imageView)
+//        mImageView?.setImageBitmap(mBitmap)
         //        mImageView.setImageBitmap(mBitmap);
         val buttonSelect = findViewById<Button>(R.id.selectButton)
         buttonSelect.setOnClickListener { v: View? ->
@@ -178,7 +179,7 @@ class SecondActivity : AppCompatActivity(), Runnable {
                             mBitmap = BitmapFactory.decodeFile(picturePath)
                             val matrix = Matrix()
                             //                                matrix.postRotate(90.0f);
-                            mBitmap = Bitmap.createBitmap(mBitmap!!, 0, 0, mBitmap!!.getWidth(), mBitmap!!.getHeight(), matrix, true)
+                            mBitmap = Bitmap.createBitmap(mBitmap!!, 0, 0, mBitmap!!.width, mBitmap!!.height, matrix, true)
                             mImageView!!.setImageBitmap(mBitmap)
                             cursor.close()
                         }
@@ -204,6 +205,10 @@ class SecondActivity : AppCompatActivity(), Runnable {
                     seedNum = pair.value
                     seedInfos += "${pair.key}含量：${100.0 * seedNum / allImgNum}%(${seedNum}/${allImgNum})\n"
                 }
+
+//                seedNum = 15
+//                seedInfos += "柠条（小叶锦鸡儿）小粒含量：${"%.2f".format(100.0 * seedNum / allImgNum)}%(${seedNum}/${allImgNum})\n"
+
                 mTextView!!.text = seedInfos
 
                 mButtonDetect!!.isEnabled = true

@@ -4,6 +4,6 @@ object Constants {
     const val TAG = "TTZZ"
     var IMAGENET_CLASSES = arrayOf(
         "Non-JINGKE968",
-        "JINGKE968"
+        "柠条（小叶锦鸡儿）小粒"
     )
 }

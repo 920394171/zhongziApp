@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--请求读取外存 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--请求调用相机-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!--请求写外存-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <!--请求sd卡内创建和删除文件权限-->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
 
